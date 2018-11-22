@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: rgb(255, 255, 100); display: flex; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="480" height="480"></canvas>
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+   
+    var columns = 10;
+    var rows = 15; 
+    var x = canvas.width / 4;
+    var y = canvas.height / 10;
+    var block = [];
+    var blockSize = 12;
+
+    //номр блока 
+    var bX = Math.round(rows / 2);
+    var bY = 0;
+    
+        for (var i = 0; i < columns; i++)
+        {
+            block[i] = [];
+            for (var j = 0; j < rows; j++)
+            {
+                block[i][j] = { x: 0, y: 0};   
+            }
+        }
+    
+  
+        function Drawblock()
+        {
+            for (var i = 0; i < columns; i++)
+            {
+                for (var j = 0; j < rows; j++) 
+                {
+                    var offsetX = x + i * (blockSize + 1);
+                    var offsetY = y + j * (blockSize + 1);
+                   
+                    block[i][j].x = offsetX;
+                    block[i][j].y = offsetY;
+                 
+                    ctx.beginPath();
+                    ctx.rect(offsetX, offsetY, blockSize, blockSize);
+                    ctx.strokeStyle = "grey";
+                    ctx.stroke();
+                    ctx.fillStyle = "white";
+                    ctx.fill();  
+                    ctx.closePath();
+                 
+                    
+
+                  
+                }     
+            }    
+        }
+       
+        //#region block define
+        {   
+            // вадратный блок 2x2
+            ctx.beginPath();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.rect(block[bX][bY].x, block[bX][bY].y, blockSize, blockSize);
+            ctx.rect(block[bX + 1][bY].x, block[bX + 1][bY].y, blockSize, blockSize);
+            ctx.rect(block[bX][bY + 1].x, block[bX][bY + 1].y, blockSize, blockSize);
+            ctx.rect(block[bX + 1][bY + 1].x, block[bX + 1][bY + 1].y, blockSize, blockSize);
+             if (block[bX][bY + 1].y == block[bX][rows - 1].y)
+            {   
+                
+            } 
+
+            ctx.fillStyle = "green";
+            ctx.fill();
+            ctx.closePath();
+
+            bY += 1;
+            
+        }
+        //#endregion
+        
+    setInterval(Drawblock, 50);
+    setInterval(BlockDefine, 50);
+
+    function draw()
+    {
+        Drawblock();
+        BlockDefine();
+        
+    }
+    draw();
+</script>
+
+</body>
+</html>
